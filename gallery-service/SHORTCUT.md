@@ -66,7 +66,7 @@ This guide shows how to create the "Create Gallery" shortcut that pre-processes 
    - URL: https://clintecker-gallery.fly.dev/gallery
    - Method: POST
    - Headers:
-     * X-API-Key = s4vgZQSVwTFOhJ97sw0OKRgKbPfXOrzLK_N24ufU4ww
+     * X-API-Key = 3aU_oOFP
    - Request Body: Form
    - Form Fields:
      * title = Provided Input (from step 4)
