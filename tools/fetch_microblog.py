@@ -259,13 +259,22 @@ class MicroblogFetcher:
         self.cache["bookmarks"].append(item_id)
 
     def process_posts(self):
-        """Process posts from Micro.blog API."""
+        """Process posts from Micro.blog hosted feed."""
         if not self.username:
             print("Error: MB_USERNAME not set")
             return
 
-        endpoint = f"/posts/{self.username}"
-        items = self.fetch_api(endpoint)
+        # Use the user's hosted feed.json for actual content
+        feed_url = f"https://{self.username}.micro.blog/feed.json"
+        try:
+            response = requests.get(feed_url, timeout=30)
+            response.raise_for_status()
+            data = response.json()
+            items = data.get("items", [])
+        except Exception as e:
+            print(f"Error fetching feed from {feed_url}: {e}")
+            return
+
         print(f"Found {len(items)} posts")
 
         for item in items:
