@@ -13,6 +13,16 @@
 
   {{ if .Params.gallery_manifest }}
   {{ partial "gallery.html" . }}
+  {{ else if .Params.photos }}
+  <div class="gallery-grid">
+    {{ range .Params.photos }}
+    <div class="gallery-item">
+      <a href="{{ .full }}" target="_blank" rel="noopener">
+        <img src="{{ .url }}" alt="{{ .alt }}" loading="lazy">
+      </a>
+    </div>
+    {{ end }}
+  </div>
   {{ end }}
 
   <footer>

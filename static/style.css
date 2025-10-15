@@ -198,6 +198,36 @@ footer {
   font-size: 0.85rem;
 }
 
+/* Gallery */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.gallery-item {
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.gallery-item a {
+  display: block;
+  line-height: 0;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.2s ease;
+  margin: 0;
+}
+
+.gallery-item a:hover img {
+  transform: scale(1.05);
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   body {
@@ -219,5 +249,10 @@ footer {
 
   ul li time {
     min-width: auto;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.5rem;
   }
 }

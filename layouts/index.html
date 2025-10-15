@@ -12,13 +12,16 @@
 {{ end }}
 </ul>
 
+{{ $galleries := where .Site.RegularPages "Type" "gallery" }}
+{{ if $galleries }}
 <h2>Recent Galleries</h2>
 <ul>
-{{ range first 5 (where .Site.RegularPages "Type" "gallery") }}
+{{ range first 5 $galleries }}
   <li>
     <time>{{ .Date.Format "2006-01-02" }}</time>
     <a href="{{ .Permalink }}">{{ .Title }}</a>
   </li>
 {{ end }}
 </ul>
+{{ end }}
 {{ end }}
