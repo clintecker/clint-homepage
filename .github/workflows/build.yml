@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Allow pushing commits
     env:
       SITE_BUCKET: ${{ secrets.SITE_BUCKET }}
       MEDIA_BUCKET: ${{ secrets.MEDIA_BUCKET }}
@@ -55,6 +57,20 @@ jobs:
       - name: Process pending galleries from S3
         run: |
           python tools/process_pending_galleries.py
+
+      - name: Commit new galleries
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add content/galleries/
+          if git diff --staged --quiet; then
+            echo "No new galleries to commit"
+          else
+            git commit -m "Add galleries from pending queue
+
+          🤖 Automated commit from GitHub Actions"
+            git push
+          fi
 
       - name: Process gallery photos
         run: |
