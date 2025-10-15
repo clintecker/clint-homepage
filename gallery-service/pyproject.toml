@@ -1,16 +1,14 @@
 [project]
-name = "clint-homepage"
+name = "gallery-service"
 version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.12"
 dependencies = [
     "boto3>=1.40.52",
-    "exifread>=3.5.1",
+    "flask>=3.1.2",
+    "gitpython>=3.1.45",
     "pillow>=11.3.0",
     "python-frontmatter>=1.1.0",
     "python-slugify>=8.0.4",
     "requests>=2.32.5",
 ]
-
-[tool.uv.workspace]
-members = ["gallery-service"]

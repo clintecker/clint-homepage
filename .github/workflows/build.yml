@@ -52,6 +52,10 @@ jobs:
         run: |
           python tools/fetch_microblog.py
 
+      - name: Process pending galleries from S3
+        run: |
+          python tools/process_pending_galleries.py
+
       - name: Process gallery photos
         run: |
           python tools/process_photos.py
