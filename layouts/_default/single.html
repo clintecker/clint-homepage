@@ -1,7 +1,9 @@
 {{ define "main" }}
 <article>
   <header>
+    {{ if .Title }}
     <h1>{{ .Title }}</h1>
+    {{ end }}
     <time>{{ .Date.Format "January 2, 2006" }}</time>
   </header>
 

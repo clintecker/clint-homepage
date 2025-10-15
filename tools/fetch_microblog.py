@@ -216,11 +216,22 @@ class MicroblogFetcher:
 
         date = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
         url = item.get("url", "")
-        title = item.get("title", "")
+        title = item.get("title", "") or "Link"
         content_html = item.get("content_html", "")
+        content_text = item.get("content_text", "")
 
-        # Convert HTML to markdown
-        content = self._html_to_markdown(content_html) if content_html else ""
+        # Use content_text if available, otherwise convert HTML
+        if content_text:
+            content = content_text
+        else:
+            content = self._html_to_markdown(content_html) if content_html else ""
+
+        # Extract title from content if empty
+        if not title or title == "Link":
+            # Try to extract from content
+            content_plain = self._strip_html(content_html)
+            if content_plain:
+                title = content_plain.split("\n")[0][:60]
 
         # Daily links file
         filename = f"{date.strftime('%Y-%m-%d')}.md"
