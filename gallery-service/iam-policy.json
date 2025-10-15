@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "GalleryServiceS3Upload",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl"
+      ],
+      "Resource": [
+        "arn:aws:s3:::i.clintecker.com/galleries/*",
+        "arn:aws:s3:::i.clintecker.com/pending-galleries/*"
+      ]
+    }
+  ]
+}

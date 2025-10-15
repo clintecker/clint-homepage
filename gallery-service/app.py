@@ -23,6 +23,7 @@ AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_REGION = os.getenv('AWS_REGION', 'us-east-1')
 S3_MEDIA_BUCKET = os.getenv('S3_MEDIA_BUCKET', 'i.clintecker.com')
+GALLERY_API_KEY = os.getenv('GALLERY_API_KEY')
 
 processor = GalleryProcessor(
     aws_access_key=AWS_ACCESS_KEY_ID,
@@ -43,12 +44,18 @@ def create_gallery():
     """Create a new gallery from uploaded photos
 
     Expects:
+    - X-API-Key header: API key for authentication
     - title: Gallery title
     - description: Optional description
     - tags: Optional comma-separated tags
     - photos: Multiple file uploads
     """
     try:
+        # Validate API key
+        api_key = request.headers.get('X-API-Key')
+        if not api_key or api_key != GALLERY_API_KEY:
+            return jsonify({'error': 'Unauthorized'}), 401
+
         # Validate request
         if 'photos' not in request.files:
             return jsonify({'error': 'No photos provided'}), 400

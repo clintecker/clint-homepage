@@ -65,7 +65,8 @@ This guide shows how to create the "Create Gallery" shortcut that pre-processes 
 7. Get Contents of URL
    - URL: https://clintecker-gallery.fly.dev/gallery
    - Method: POST
-   - Headers: (none needed)
+   - Headers:
+     * X-API-Key = s4vgZQSVwTFOhJ97sw0OKRgKbPfXOrzLK_N24ufU4ww
    - Request Body: Form
    - Form Fields:
      * title = Provided Input (from step 4)
@@ -128,6 +129,10 @@ This guide shows how to create the "Create Gallery" shortcut that pre-processes 
 Same process - any app that can share images will work.
 
 ## Troubleshooting
+
+### "Unauthorized"
+- Check that the X-API-Key header is correctly set in step 7
+- Make sure you're using the exact key from the instructions
 
 ### "No photos provided"
 - Make sure you selected images before tapping Share
