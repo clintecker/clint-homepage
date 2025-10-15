@@ -1,0 +1,71 @@
+name: Build & Deploy
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "*/20 * * * *"  # Every 20 minutes
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SITE_BUCKET: ${{ secrets.SITE_BUCKET }}
+      MEDIA_BUCKET: ${{ secrets.MEDIA_BUCKET }}
+      CF_DIST_SITE: ${{ secrets.CF_DIST_SITE }}
+      MB_USERNAME: ${{ secrets.MB_USERNAME }}
+      MB_APP_TOKEN: ${{ secrets.MB_APP_TOKEN }}
+      MB_API_BASE: https://micro.blog
+      BASEURL: ${{ secrets.BASEURL }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install CLI dependencies
+        run: |
+          pip install requests python-frontmatter python-slugify pillow exifread boto3
+          npm i -g sharp-cli
+
+      - name: Install Hugo
+        run: |
+          HUGO_VERSION=0.134.2
+          curl -L -o hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz
+          tar -xzf hugo.tar.gz
+          sudo mv hugo /usr/local/bin/hugo
+          hugo version
+
+      - name: Prepare content from Micro.blog
+        run: |
+          python tools/fetch_microblog.py
+
+      - name: Process gallery photos
+        run: |
+          python tools/process_photos.py
+
+      - name: Build site with Hugo
+        run: |
+          hugo --minify --baseURL="${BASEURL}"
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync public/ s3://${SITE_BUCKET} --delete --only-show-errors
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${CF_DIST_SITE} \
+            --paths "/index.html" "/posts/*" "/galleries/*" "/links/*"

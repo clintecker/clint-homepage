@@ -1,0 +1,38 @@
+# Hugo
+/public/
+/resources/
+.hugo_build.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+
+# uv
+.uv/
+
+# Data cache
+/data/cache.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets (just in case)
+.env
+*.pem
+*.key
+GITHUB_SECRETS.md

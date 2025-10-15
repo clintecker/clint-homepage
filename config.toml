@@ -1,0 +1,54 @@
+baseURL = "https://clintecker.com"
+languageCode = "en-us"
+title = "Clint Ecker"
+theme = ""
+
+# Enable emoji support
+enableEmoji = true
+
+# Content settings
+[params]
+  author = "Clint Ecker"
+  description = "Personal site with posts, photos, and links"
+  mediaBaseURL = "https://i.clintecker.com"
+
+# Taxonomies
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+# Output formats
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+
+# RSS configuration
+[outputFormats.RSS]
+  mediaType = "application/rss+xml"
+  baseName = "feed"
+
+# JSON Feed
+[outputFormats.JSON]
+  mediaType = "application/json"
+  baseName = "feed"
+  isPlainText = true
+
+# Permalinks
+[permalinks]
+  posts = "/posts/:year/:month/:slug/"
+  galleries = "/galleries/:slug/"
+  links = "/links/:year/:month/:day/"
+
+# Markup settings
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = "monokai"
+    lineNos = false
+
+# Media types
+[mediaTypes]
+  [mediaTypes."application/json"]
+    suffixes = ["json"]

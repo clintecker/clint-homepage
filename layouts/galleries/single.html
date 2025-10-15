@@ -1,0 +1,28 @@
+{{ define "main" }}
+<article class="gallery">
+  <header>
+    <h1>{{ .Title }}</h1>
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+  </header>
+
+  {{ if .Content }}
+  <div class="gallery-description">
+    {{ .Content }}
+  </div>
+  {{ end }}
+
+  {{ if .Params.gallery_manifest }}
+  {{ partial "gallery.html" . }}
+  {{ end }}
+
+  <footer>
+    {{ with .Params.tags }}
+    <div class="tags">
+      {{ range . }}
+      <a href="/tags/{{ . | urlize }}">#{{ . }}</a>
+      {{ end }}
+    </div>
+    {{ end }}
+  </footer>
+</article>
+{{ end }}

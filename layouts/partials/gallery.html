@@ -1,0 +1,33 @@
+{{- $manifestPath := .Params.gallery_manifest -}}
+{{- $manifest := getJSON $manifestPath -}}
+
+<div class="gallery-grid">
+  {{- range $manifest.items -}}
+    {{- $v := .variants -}}
+    <a href="{{ (index $v "1600w").jpg }}" class="glightbox" data-gallery="g">
+      <picture>
+        {{- if (index $v "1600w").avif -}}
+        <source type="image/avif" srcset='
+          {{- range $k, $val := $v -}}
+            {{- if $val.avif -}}
+              {{- $val.avif }} {{ $k }},
+            {{- end -}}
+          {{- end -}}
+        '>
+        {{- end -}}
+        <img loading="lazy"
+             alt="{{ .alt }}"
+             src='{{ (index $v "1200w").jpg }}'
+             srcset='
+               {{- range $k, $val := $v -}}
+                 {{- $val.jpg }} {{ $k }},
+               {{- end -}}
+             '
+             sizes="(max-width: 800px) 100vw, 800px">
+      </picture>
+      {{- with .caption -}}
+        <figcaption>{{ . }}</figcaption>
+      {{- end -}}
+    </a>
+  {{- end -}}
+</div>
